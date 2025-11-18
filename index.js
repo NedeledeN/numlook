@@ -2,12 +2,29 @@ import express from "express";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Pour __dirname dans ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// =========================
+//   ROUTE RACINE
+// =========================
+app.get("/", (req, res) => {
+  // Option 1 : texte simple
+  res.send("Bienvenue sur Numlook API !");
+  
+  // Option 2 : servir un fichier HTML (décommente si tu as index.html)
+  // res.sendFile(path.join(__dirname, "index.html"));
+});
 
 // =========================
 //   ENDPOINT /search
@@ -21,6 +38,10 @@ app.get("/search", async (req, res) => {
 
   try {
     const API_KEY = process.env.NUMVERIFY_API_KEY;
+
+    if (!API_KEY) {
+      return res.status(500).json({ error: "Clé API Numverify manquante" });
+    }
 
     const url = `http://apilayer.net/api/validate?access_key=${API_KEY}&number=${phone}&country_code=&format=1`;
 
@@ -56,13 +77,10 @@ app.get("/search", async (req, res) => {
 });
 
 // =========================
-//   Lancer le serveur
+//   LANCER LE SERVEUR
 // =========================
-
-// Render impose d'utiliser process.env.PORT
 const PORT = process.env.PORT || 3000;
 
-// "0.0.0.0" = indispensable pour Render
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Backend lancé sur port ${PORT}`);
 });
