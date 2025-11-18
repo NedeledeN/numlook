@@ -7,7 +7,7 @@ document.getElementById("searchForm").addEventListener("submit", async (e) => {
   resultBox.innerHTML = "Recherche en cours...";
   resultBox.classList.remove("hidden");
 
-  const res = await fetch(`http://localhost:3000/search?phone=${encodeURIComponent(phone)}`);
+  const res = await fetch(`https://numlook.onrender.com/${encodeURIComponent(phone)}`);
   const data = await res.json();
 
   resultBox.innerHTML = `

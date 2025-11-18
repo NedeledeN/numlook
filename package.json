@@ -1,10 +1,10 @@
 {
-  "name": "recherche-numero",
+  "name": "numverify-backend",
   "type": "module",
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.4.0",
     "express": "^4.18.2",
-    "node-fetch": "^3.2.0"
+    "node-fetch": "^3.3.2"
   }
 }
