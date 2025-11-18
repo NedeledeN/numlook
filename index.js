@@ -27,9 +27,8 @@ app.get("/search", async (req, res) => {
     const apiRes = await fetch(url);
     const data = await apiRes.json();
 
-    console.log("Réponse numverify :", data);  // 🔍 utile pour diagnostiquer
+    console.log("Réponse numverify :", data);
 
-    // Gestion des erreurs de l'API
     if (data.error) {
       return res.status(400).json({
         error: "Erreur API Numverify",
@@ -37,16 +36,15 @@ app.get("/search", async (req, res) => {
       });
     }
 
-    // Construction de la réponse propre
     const result = {
       valid: data.valid ?? null,
       number: data.international_format ?? null,
       local_format: data.local_format ?? null,
       country: data.country_name ?? null,
       country_code: data.country_code ?? null,
-      location: data.location ?? null,       // souvent vide en version gratuite
-      carrier: data.carrier ?? null,         // souvent vide en version gratuite
-      line_type: data.line_type ?? null      // souvent vide en version gratuite
+      location: data.location ?? null,
+      carrier: data.carrier ?? null,
+      line_type: data.line_type ?? null
     };
 
     res.json(result);
@@ -60,6 +58,11 @@ app.get("/search", async (req, res) => {
 // =========================
 //   Lancer le serveur
 // =========================
-app.listen(3000, () => {
-  console.log("Backend lancé sur http://localhost:3000");
+
+// Render impose d'utiliser process.env.PORT
+const PORT = process.env.PORT || 3000;
+
+// "0.0.0.0" = indispensable pour Render
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Backend lancé sur port ${PORT}`);
 });
